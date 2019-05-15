@@ -1,4 +1,4 @@
-package Otros;
+package obj;
 import javax.swing.JFrame;
 
 public abstract class Ventana extends JFrame
@@ -41,6 +41,7 @@ public abstract class Ventana extends JFrame
 		}
 		crear();
 		this.setVisible(true);
+		this.setExtendedState(MAXIMIZED_BOTH);
 	}
 	public abstract void crear();
 }
