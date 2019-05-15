@@ -81,7 +81,7 @@ public class GUIPrincipal extends Ventana
 	try
 	{
 	    String stm= "SELECT id_mar AS Marcas, nombre AS Nombre FROM marcas";
-	    String stm2= "INSERT INTO marcas (nombre) VALUES ('Ford');";
+	    String stm2= "UPDATE marcas set nombre= 'Chevrolet' where id_mar= 7;";
 	    
 	    System.out.println(Conector.getDatos(stm));
 	    System.out.println(Conector.getHeaders(stm));
