@@ -2,6 +2,7 @@ package obj;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,6 +12,7 @@ public class Conector
 {
     private static Connection con	  = null;
     private static Statement  declaracion = null;
+    private static PreparedStatement preparado = null;
     private static ResultSet  resultado	  = null;
 
     private static void crearConexion()
@@ -39,8 +41,9 @@ public class Conector
 	    if (con != null)
 	    {
 		con.close();
-		declaracion.close();
-		resultado.close();
+		declaracion= null;
+		resultado= null;
+		preparado= null;
 		con= null;
 	    }
 	}
@@ -96,6 +99,58 @@ public class Conector
 	
 	return headers;
     }
+    
+    public static ArrayList<String> getDatatypes(String stm) throws SQLException
+    {
+	crearConexion();
+	
+	ArrayList<String> datatypes = new ArrayList<String>();
+	declaracion = con.createStatement();
+	resultado = declaracion.executeQuery(stm);
+	
+	for (int i = 0; i < resultado.getMetaData().getColumnCount(); i++)
+	{
+	    datatypes.add(resultado.getMetaData().getColumnTypeName(i + 1));
+	}
+	
+	cerrarConexion();
+	
+	return datatypes;
+    }
+    
+    public static String getPK(String table) throws SQLException
+    {
+	crearConexion();
+	
+	String pk = null;
+	resultado = con.getMetaData().getPrimaryKeys(null, null, table);
+	
+	while(resultado.next())
+	{
+	    pk = resultado.getString(1);
+	}
+	
+	cerrarConexion();
+	
+	return pk;
+    }
+    
+    public static ArrayList<String> getFKs(String table) throws SQLException
+    {
+	crearConexion();
+	
+	ArrayList<String> fks = new ArrayList<String>();
+	resultado = con.getMetaData().getExportedKeys(null, null, table);
+	
+	while(resultado.next())
+	{
+	    fks.add(resultado.getString(1));
+	}
+	
+	cerrarConexion();
+	
+	return fks;
+    }
 
     public static String setQuery(String query) throws SQLException
     {
@@ -107,5 +162,23 @@ public class Conector
 	cerrarConexion();	
     
 	return (mod + " elemento(s) alterado(s)");
+    }
+    
+    public static ArrayList<String> recuperarRegistro(String tabla, String columnPK, String primaryKey) throws SQLException
+    {
+	crearConexion();
+	
+	ArrayList<String> datos = new ArrayList<String>();
+	declaracion = con.createStatement();
+	resultado = declaracion.executeQuery("SELECT * FROM " + tabla + " WHERE " + columnPK + "= " + primaryKey);
+	
+	for (int i = 0; i < resultado.getMetaData().getColumnCount(); i++)
+	{
+	    datos.add(resultado.getString(i + 1));
+	}
+	
+	cerrarConexion();
+	
+	return datos;
     }
 }

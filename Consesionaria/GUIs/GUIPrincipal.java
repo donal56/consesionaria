@@ -86,6 +86,8 @@ public class GUIPrincipal extends Ventana
 	    System.out.println(Conector.getDatos(stm));
 	    System.out.println(Conector.getHeaders(stm));
 	    System.out.println(Conector.setQuery(stm2));
+	    
+//	    new GUIRegistro("vendedores", "RAGC980622BP3");
 	}
 	catch (SQLException e)
 	{
