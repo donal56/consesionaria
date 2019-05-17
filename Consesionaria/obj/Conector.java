@@ -66,17 +66,18 @@ public class Conector
 	ArrayList<ArrayList<String>> datos = new ArrayList<ArrayList<String>>();
 	declaracion = con.createStatement();
 	resultado = declaracion.executeQuery(stm);
-	
+		
 	while (resultado.next())
-	{
-	    for (int i = 0; i < resultado.getMetaData().getColumnCount(); i++)
-	    {
-		ArrayList<String> rows = new ArrayList<String>();
-		rows.add(resultado.getString(i + 1));
-		datos.add(rows);
-	    }
+	{		
+		for (int i = 0; i < resultado.getMetaData().getColumnCount() ; i++)
+		{
+			if (datos.size() <= i) {
+				datos.add(i,new ArrayList<String>());
+			}
+	    	datos.get(i).add(resultado.getString(i+1));
+		}
 	}
-	
+
 	cerrarConexion();
 	
 	return datos;
