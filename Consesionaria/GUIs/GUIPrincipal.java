@@ -3,10 +3,14 @@ package GUIs;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import Otros.GUIGenerator;
 import obj.Conector;
@@ -19,6 +23,7 @@ public class GUIPrincipal extends Ventana
     JPanel	pnlCentral, pnlTitulo;
     JLabel	lblTitulo;
     Container	contenedorGral;
+    
     static int	ancho = java.awt.Toolkit.getDefaultToolkit()
 	    .getScreenSize().width;
     static int	alto  = java.awt.Toolkit.getDefaultToolkit()
@@ -60,6 +65,7 @@ public class GUIPrincipal extends Ventana
 	iconos[6] = new ImageIcon(
 		GUIPrincipal.class.getResource("/img/icnVentas.png"));
 	
+	String nomTablas[] = {"automoviles","caracteristicas","marcas","modelo","servicios_oficiales","vendedores","ventas"};
 	for (int i = 0; i < 7; i++)
 	{
 	    botones[i] = new JButton();
@@ -68,6 +74,7 @@ public class GUIPrincipal extends Ventana
 	    botones[i].setOpaque(false);
 	    botones[i].setContentAreaFilled(false);
 	    botones[i].setSelectedIcon(null);
+	    botones[i].addActionListener(generarTabla(nomTablas[i]));
 	    pnlCentral.add(botones[i]);
 	}
 	
@@ -79,4 +86,20 @@ public class GUIPrincipal extends Ventana
 	contenedorGral.add(pnlTitulo, BorderLayout.NORTH);
 	contenedorGral.add(pnlCentral, BorderLayout.CENTER);
     }
+    
+    private ActionListener generarTabla(String tabla){
+		return new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				
+				pnlCentral.setLayout(new GridLayout(1,1));
+				pnlCentral.removeAll();
+				pnlCentral.repaint();
+				pnlCentral.add(	new GUIGenerator(tabla) );
+				pnlCentral.revalidate();
+			
+			} 
+		};
+	
+	}
 }

@@ -7,9 +7,9 @@ public class Main
 {
 	public static void main(String[] args) 
 	{
-		//new GUIPrincipal();
+		new GUIPrincipal();
 	    	//Nuevo registro en tabla
-		new GUIRegistro("vendedores", null);
+		//new GUIRegistro("vendedores", null);
 		//Modificar o eliminar un registro existente
 		//new GUIRegistro("vendedores", "RAGC980622BP3");
 	}

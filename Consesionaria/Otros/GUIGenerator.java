@@ -162,7 +162,7 @@ public class GUIGenerator extends JPanel {
 		{
 			if (e.getClickCount() == 2) 
 			{
-				new GUIRegistro(nomTabla, null);
+				new GUIRegistro(nomTabla,table.getValueAt(table.getSelectedRow(),0).toString());
 				remove(panelTable);
 				drawTable();
 			}
