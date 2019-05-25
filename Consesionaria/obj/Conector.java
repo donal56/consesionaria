@@ -12,7 +12,6 @@ public class Conector
 {
     private static Connection con	  = null;
     private static Statement  declaracion = null;
-    private static PreparedStatement preparado = null;
     private static ResultSet  resultado	  = null;
 
     private static void crearConexion()
@@ -43,7 +42,6 @@ public class Conector
 		con.close();
 		declaracion= null;
 		resultado= null;
-		preparado= null;
 		con= null;
 	    }
 	}
@@ -71,7 +69,8 @@ public class Conector
 	{		
 		for (int i = 0; i < resultado.getMetaData().getColumnCount() ; i++)
 		{
-			if (datos.size() <= i) {
+			if (datos.size() <= i) 
+			{
 				datos.add(i,new ArrayList<String>());
 			}
 	    	datos.get(i).add(resultado.getString(i+1));
@@ -106,11 +105,7 @@ public class Conector
 	crearConexion();
 	
 	ArrayList<String> datatypes = new ArrayList<String>();
-	String stm= "SELECT c.data_type FROM information_schema.table_constraints tc \n" + 
-		"JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_name) \n" + 
-		"JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema\n" + 
-		"  AND tc.table_name = c.table_name AND ccu.column_name = c.column_name\n" + 
-		"WHERE constraint_type = 'PRIMARY KEY' and tc.table_name = '" + table + "'";
+	String stm= "SELECT data_type FROM information_schema.columns WHERE table_name = '" + table + "'";
 	
 	declaracion= con.createStatement();
 	resultado= declaracion.executeQuery(stm);
@@ -144,25 +139,35 @@ public class Conector
 	    pk = resultado.getString(1);
 	}
 	
-	System.out.println(pk);
-	
 	cerrarConexion();
 	
 	return pk;
     }
     
-    public static ArrayList<String> getFKs(String table) throws SQLException
+    public static ArrayList<ArrayList<String>> getFKs(String table) throws SQLException
     {
 	crearConexion();
 	
-	ArrayList<String> fks = new ArrayList<String>();
-	resultado = con.getMetaData().getExportedKeys(null, null, table);
+	ArrayList<ArrayList<String>> fks = new ArrayList<ArrayList<String>>();
+	fks.add(0,new ArrayList<String>());
+	fks.add(1,new ArrayList<String>());
+	fks.add(2,new ArrayList<String>());
+	    
+	String stm= "SELECT kcu.column_name, ccu.table_name, ccu.column_name FROM information_schema.table_constraints AS tc " + 
+			"JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name " + 
+			"AND tc.table_schema = kcu.table_schema JOIN information_schema.constraint_column_usage AS ccu " + 
+			"ON ccu.constraint_name = tc.constraint_name AND ccu.table_schema = tc.table_schema " + 
+			"WHERE tc.constraint_type = 'FOREIGN KEY' AND tc.table_name= '" + table + "';";
+	
+	declaracion= con.createStatement();
+	resultado= declaracion.executeQuery(stm);
 	
 	while(resultado.next())
 	{
-	    fks.add(resultado.getString(1));
+	    fks.get(0).add(resultado.getString(1));
+	    fks.get(1).add(resultado.getString(2));
+	    fks.get(2).add(resultado.getString(3));
 	}
-	System.out.println(fks);
 	
 	cerrarConexion();
 	
@@ -184,14 +189,25 @@ public class Conector
     public static ArrayList<String> recuperarRegistro(String tabla, String columnPK, String primaryKey) throws SQLException
     {
 	crearConexion();
-	
+
 	ArrayList<String> datos = new ArrayList<String>();
 	declaracion = con.createStatement();
-	resultado = declaracion.executeQuery("SELECT * FROM " + tabla + " WHERE " + columnPK + "= " + primaryKey);
 	
-	for (int i = 0; i < resultado.getMetaData().getColumnCount(); i++)
+	try
 	{
-	    datos.add(resultado.getString(i + 1));
+	    resultado = declaracion.executeQuery("SELECT * FROM " + tabla + " WHERE " + columnPK + "= '" + primaryKey + "'");
+	}
+	catch(SQLException e)
+	{
+	    resultado = declaracion.executeQuery("SELECT * FROM " + tabla + " WHERE " + columnPK + "= " + primaryKey);
+	}
+	
+	while(resultado.next())
+	{
+        	for (int i = 0; i < resultado.getMetaData().getColumnCount(); i++)
+        	{
+        	    datos.add(resultado.getString(i + 1));
+        	}
 	}
 	
 	cerrarConexion();

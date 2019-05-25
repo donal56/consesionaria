@@ -12,7 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,7 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-
+import GUIs.GUIRegistro;
 import obj.Conector;
 import obj.Ventana;
 
@@ -39,7 +38,8 @@ public class GUIGenerator extends JPanel {
 	private JTable table;
 	private JTextField txtFilter;
 	
-	public GUIGenerator(String tabla) {
+	public GUIGenerator(String tabla) 
+	{
 		nomTabla = tabla;
 		stm= "SELECT * FROM "+nomTabla;
 		
@@ -88,7 +88,7 @@ public class GUIGenerator extends JPanel {
 
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new VRegistros();
+				new GUIRegistro(nomTabla, null);
 			}
 
 		});
@@ -162,28 +162,10 @@ public class GUIGenerator extends JPanel {
 		{
 			if (e.getClickCount() == 2) 
 			{
-				new VRegistros();
+				new GUIRegistro(nomTabla, null);
 				remove(panelTable);
 				drawTable();
 			}
 		};
 	};
-	
-	// test
-	public static void main(String[] args) {
-			new Ventana() {
-				
-				@Override
-				public void crear() {
-					add(new GUIGenerator("marcas"));
-					
-				}
-			};
-
-
-	}
-
-	class VRegistros{
-	}
-
 }

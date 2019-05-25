@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import Otros.GUIGenerator;
 import obj.Conector;
 import obj.Ventana;
 
@@ -77,22 +78,5 @@ public class GUIPrincipal extends Ventana
 	contenedorGral.setBackground(Color.WHITE);
 	contenedorGral.add(pnlTitulo, BorderLayout.NORTH);
 	contenedorGral.add(pnlCentral, BorderLayout.CENTER);
-	
-	try
-	{
-	    String stm= "SELECT id_mar AS Marcas, nombre AS Nombre FROM marcas";
-	    String stm2= "UPDATE marcas set nombre= 'Chevrolet' where id_mar= 7;";
-	    
-	    System.out.println(Conector.getDatos(stm));
-	    System.out.println(Conector.getHeaders(stm));
-	    System.out.println(Conector.setQuery(stm2));
-	    
-	    new GUIRegistro("vendedores", "RAGC980622BP3");
-	}
-	catch (SQLException e)
-	{
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
     }
 }
