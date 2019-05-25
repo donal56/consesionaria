@@ -101,17 +101,23 @@ public class Conector
 	return headers;
     }
     
-    public static ArrayList<String> getDatatypes(String stm) throws SQLException
+    public static ArrayList<String> getDatatypes(String table) throws SQLException
     {
 	crearConexion();
 	
 	ArrayList<String> datatypes = new ArrayList<String>();
-	declaracion = con.createStatement();
-	resultado = declaracion.executeQuery(stm);
+	String stm= "SELECT c.data_type FROM information_schema.table_constraints tc \n" + 
+		"JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_name) \n" + 
+		"JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema\n" + 
+		"  AND tc.table_name = c.table_name AND ccu.column_name = c.column_name\n" + 
+		"WHERE constraint_type = 'PRIMARY KEY' and tc.table_name = '" + table + "'";
 	
-	for (int i = 0; i < resultado.getMetaData().getColumnCount(); i++)
+	declaracion= con.createStatement();
+	resultado= declaracion.executeQuery(stm);
+	
+	while(resultado.next())
 	{
-	    datatypes.add(resultado.getMetaData().getColumnTypeName(i + 1));
+	    datatypes.add(resultado.getString(1));
 	}
 	
 	cerrarConexion();
@@ -124,12 +130,21 @@ public class Conector
 	crearConexion();
 	
 	String pk = null;
-	resultado = con.getMetaData().getPrimaryKeys(null, null, table);
+	String stm= "SELECT c.column_name FROM information_schema.table_constraints tc \n" + 
+		"JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_name) \n" + 
+		"JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema\n" + 
+		"  AND tc.table_name = c.table_name AND ccu.column_name = c.column_name\n" + 
+		"WHERE constraint_type = 'PRIMARY KEY' and tc.table_name = '" + table + "'";
+	
+	declaracion= con.createStatement();
+	resultado= declaracion.executeQuery(stm);
 	
 	while(resultado.next())
 	{
 	    pk = resultado.getString(1);
 	}
+	
+	System.out.println(pk);
 	
 	cerrarConexion();
 	
@@ -147,6 +162,7 @@ public class Conector
 	{
 	    fks.add(resultado.getString(1));
 	}
+	System.out.println(fks);
 	
 	cerrarConexion();
 	

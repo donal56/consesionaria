@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -61,13 +60,11 @@ public class GUIRegistro extends Ventana
 	try
 	{
 	    datos = Conector.getHeaders("SELECT * FROM " + tabla);
-	    datatypes = Conector.getDatatypes("SELECT * FROM " + tabla);
+	    datatypes = Conector.getDatatypes(tabla);
 	    primaryKey = Conector.getPK(tabla);
-	    //null en primary key
-	    //dataypes con int
+	    
 //	    foreignKeys = Conector.getFKs(tabla);
 //	    consulta = Conector.recuperarRegistro(tabla, columnPK, primaryKey);
-	    System.out.println(primaryKey);
 
 	    
 	    for (int i = 0; i < datos.size(); i++)
