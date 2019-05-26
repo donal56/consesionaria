@@ -236,9 +236,8 @@ public class GUIRegistro extends JDialog
 		    
 		    query += insert(((JComboBox<String>) panel.getComponent(i)).getSelectedItem().toString());
 		    k++;
-		
-		i++;
 		}
+		i++;
 	    }
 	    
 	    try
@@ -252,7 +251,7 @@ public class GUIRegistro extends JDialog
 	    }
 	    catch (SQLException e2)
 	    {
-		JOptionPane.showMessageDialog( null, "Error de guardado: " + "\n" + e2 + "Insert Into " + tabla + " Values(" + query + " )");
+		JOptionPane.showMessageDialog( null, "Error de guardado: " + "\n" + e2);
 	    }
 	}
 };
