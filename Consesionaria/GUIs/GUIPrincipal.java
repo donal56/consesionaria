@@ -6,14 +6,13 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import Otros.GUIGenerator;
-import obj.Conector;
 import obj.Ventana;
 
 public class GUIPrincipal extends Ventana
@@ -65,18 +64,7 @@ public class GUIPrincipal extends Ventana
 	iconos[6] = new ImageIcon(
 		GUIPrincipal.class.getResource("/img/icnVentas.png"));
 	
-	String nomTablas[] = {"automoviles","caracteristicas","marcas","modelo","servicios_oficiales","vendedores","ventas"};
-	for (int i = 0; i < 7; i++)
-	{
-	    botones[i] = new JButton();
-	    botones[i].setIcon(iconos[i]);
-	    botones[i].setBorder(null);
-	    botones[i].setOpaque(false);
-	    botones[i].setContentAreaFilled(false);
-	    botones[i].setSelectedIcon(null);
-	    botones[i].addActionListener(generarTabla(nomTablas[i]));
-	    pnlCentral.add(botones[i]);
-	}
+	rellenarPanel();
 	
 	pnlTitulo.add(lblTitulo);
 	pnlTitulo.setBackground(Color.WHITE);
@@ -85,6 +73,25 @@ public class GUIPrincipal extends Ventana
 	contenedorGral.setBackground(Color.WHITE);
 	contenedorGral.add(pnlTitulo, BorderLayout.NORTH);
 	contenedorGral.add(pnlCentral, BorderLayout.CENTER);
+	
+	pnlTitulo.addMouseListener(new MouseListener()
+	{
+	    public void mouseReleased(MouseEvent e)	{	}
+	    
+	    public void mousePressed(MouseEvent e)	{	}
+	    
+    	    public void mouseExited(MouseEvent e)	{	}
+	    
+	    public void mouseEntered(MouseEvent e)	{	}
+	    
+	    public void mouseClicked(MouseEvent e)
+	    {		
+		pnlCentral.removeAll();
+		pnlCentral.revalidate();
+		rellenarPanel();		
+		pnlCentral.repaint();
+	    }
+	});
     }
     
     private ActionListener generarTabla(String tabla){
@@ -102,4 +109,20 @@ public class GUIPrincipal extends Ventana
 		};
 	
 	}
-}
+    
+    private void rellenarPanel()
+    {
+	String nomTablas[] = {"automoviles","caracteristicas","marcas","modelo","servicios_oficiales","vendedores","ventas"};
+	for (int i = 0; i < 7; i++)
+	{
+	    botones[i] = new JButton();
+	    botones[i].setIcon(iconos[i]);
+	    botones[i].setBorder(null);
+	    botones[i].setOpaque(false);
+	    botones[i].setContentAreaFilled(false);
+	    botones[i].setSelectedIcon(null);
+	    botones[i].addActionListener(generarTabla(nomTablas[i]));
+	    pnlCentral.add(botones[i]);
+	}
+    }
+ }

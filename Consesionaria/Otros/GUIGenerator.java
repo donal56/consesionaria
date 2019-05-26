@@ -1,5 +1,6 @@
 package Otros;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -26,13 +27,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import GUIs.GUIRegistro;
 import obj.Conector;
-import obj.Ventana;
 
 public class GUIGenerator extends JPanel {
 	private String nomTabla;
 	private String stm;
 	private TableRowSorter tbfiltro;	
-	private JButton btnAdd;
+	private JButton btnAdd, btnAtras;
 	private JPanel topbar, panelTable;
 	private JScrollPane scroll;
 	private JTable table;
@@ -44,12 +44,16 @@ public class GUIGenerator extends JPanel {
 		stm= "SELECT * FROM "+nomTabla;
 		
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+		setBackground(Color.WHITE);
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		topbar = new JPanel();
 		panelTable = new JPanel();
 		table = new JTable();
 		scroll = new JScrollPane();
+		
+		panelTable.setBackground(Color.white);
+		topbar.setBackground(Color.white);
 
 		topbar.setLayout(new BoxLayout(topbar, BoxLayout.X_AXIS));
 		topbar.setBorder(BorderFactory.createEmptyBorder(20, 10, 40, 10));
@@ -59,10 +63,14 @@ public class GUIGenerator extends JPanel {
 			txtFilter.setMaximumSize( new Dimension(70, 20) );
 			
 			btnAdd = crearBoton("agregar.png", "agregarHover.png", "agregarPressed.png", "Agregar un registro a la tabla");
-
+			btnAtras = crearBoton("atras.png", "atrasHover.png", "atrasPressed.png", "Volver al menu principal");
+			
+			
 		topbar.add(txtFilter);
 		topbar.add(Box.createRigidArea(new Dimension(40, 10)));
 		topbar.add(btnAdd);
+		topbar.add(Box.createRigidArea(new Dimension(20, 10)));
+		topbar.add(btnAtras);
 		topbar.add(Box.createHorizontalGlue());
 
 		add(topbar);
@@ -93,6 +101,14 @@ public class GUIGenerator extends JPanel {
 
 		});
 
+		btnAtras.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				//Cerrar
+			}
+
+		});
 	}
 
 	// methods
