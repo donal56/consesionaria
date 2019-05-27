@@ -58,13 +58,13 @@ public class GUIGenerator extends JPanel {
 		topbar.setLayout(new BoxLayout(topbar, BoxLayout.X_AXIS));
 		topbar.setBorder(BorderFactory.createEmptyBorder(20, 10, 40, 10));
 		
-			txtFilter = new JTextField("Filtrar por clave primaria", 70);
-			txtFilter.setFont(new Font("Calibri light", Font.PLAIN, 15));
-			txtFilter.setMaximumSize( new Dimension(70, 20) );
-			
-			btnAdd = crearBoton("agregar.png", "agregarHover.png", "agregarPressed.png", "Agregar un registro a la tabla");
-			btnAtras = crearBoton("atras.png", "atrasHover.png", "atrasPressed.png", "Volver al menu principal");
-			
+		txtFilter = new JTextField("Filtrar por clave primaria", 70);
+		txtFilter.setFont(new Font("Calibri light", Font.PLAIN, 15));
+		txtFilter.setMaximumSize( new Dimension(70, 20) );
+		
+		btnAdd = crearBoton("agregar.png", "agregarHover.png", "agregarPressed.png", "Agregar un registro a la tabla");
+		btnAtras = crearBoton("atras.png", "atrasHover.png", "atrasPressed.png", "Volver al menu principal");
+		
 			
 		topbar.add(txtFilter);
 		topbar.add(Box.createRigidArea(new Dimension(40, 10)));
@@ -97,6 +97,8 @@ public class GUIGenerator extends JPanel {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new GUIRegistro(nomTabla, null);
+				remove(panelTable);
+				drawTable();
 			}
 
 		});
