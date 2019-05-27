@@ -18,15 +18,15 @@ import obj.Ventana;
 public class GUIPrincipal extends Ventana
 {
     ImageIcon[]	iconos;
-    JButton[]	botones;
-    JPanel	pnlCentral, pnlTitulo;
-    JLabel	lblTitulo;
+    JButton  []	botones;
+    ImageIcon[] pressed;
+    JPanel	    pnlCentral, pnlTitulo;
+    JLabel	    lblTitulo,
+                lblGif    ;
     Container	contenedorGral;
     
-    static int	ancho = java.awt.Toolkit.getDefaultToolkit()
-	    .getScreenSize().width;
-    static int	alto  = java.awt.Toolkit.getDefaultToolkit()
-	    .getScreenSize().height;
+    static int	ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+    static int	alto  = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 
     public GUIPrincipal()
     {
@@ -40,12 +40,16 @@ public class GUIPrincipal extends Ventana
 	this.setContentPane(contenedorGral);
 	contenedorGral.setBackground(Color.white);
 	
-	iconos = new ImageIcon[7];
-	botones = new JButton[7];
+	iconos  = new ImageIcon[7];
+	botones = new JButton  [7];
+	pressed =new ImageIcon [7];
 	
 	pnlCentral = new JPanel();
-	pnlTitulo = new JPanel();
-	lblTitulo = new JLabel();
+	pnlTitulo  = new JPanel();
+	lblTitulo  = new JLabel();
+	lblGif     = new JLabel();
+	
+	lblGif   .setIcon(new ImageIcon(GUIPrincipal.class.getResource("/img/llantaGif.gif")));
 	
 	lblTitulo.setIcon(new ImageIcon(
 		GUIPrincipal.class.getResource("/img/imgTitulo.png")));
@@ -64,6 +68,16 @@ public class GUIPrincipal extends Ventana
 	iconos[6] = new ImageIcon(
 		GUIPrincipal.class.getResource("/img/icnVentas.png"));
 	
+	pressed[0]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressAutomoviles.png"    ));
+	pressed[1]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressCaracteristicas.png"));
+	pressed[2]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressMarcas.png"         ));
+	pressed[3]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressModelo.png"         ));
+	pressed[4]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressServicios.png"      ));
+	pressed[5]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressVendedores.png"     ));
+	pressed[6]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressVentas.png"         ));
+	
+	
+	
 	rellenarPanel();
 	
 	pnlTitulo.add(lblTitulo);
@@ -71,29 +85,29 @@ public class GUIPrincipal extends Ventana
 	pnlTitulo.setBorder(null);
 	pnlCentral.setBackground(Color.WHITE);
 	contenedorGral.setBackground(Color.WHITE);
-	contenedorGral.add(pnlTitulo, BorderLayout.NORTH);
-	contenedorGral.add(pnlCentral, BorderLayout.CENTER);
+	pnlCentral.add(lblGif);
+	
+	
 	
 	pnlTitulo.addMouseListener(new MouseListener()
 	{
 	    public void mouseReleased(MouseEvent e)	{	}
 	    
-	    public void mousePressed(MouseEvent e)	{	}
+	    public void mousePressed (MouseEvent e)	{	}
 	    
-    	    public void mouseExited(MouseEvent e)	{	}
+        public void mouseExited  (MouseEvent e)	{	}
 	    
-	    public void mouseEntered(MouseEvent e)	{	}
+	    public void mouseEntered (MouseEvent e)	{	}
 	    
-	    public void mouseClicked(MouseEvent e)
+	    public void mouseClicked (MouseEvent e)
 	    {		
-		pnlCentral.removeAll();
-		pnlCentral.revalidate();
-		rellenarPanel();		
-		pnlCentral.repaint();
+			pnlCentral.removeAll();
+			pnlCentral.revalidate();
+			rellenarPanel();		
+			pnlCentral.repaint();
 	    }
 	});
     }
-    
     private ActionListener generarTabla(String tabla){
 		return new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) 
@@ -104,12 +118,9 @@ public class GUIPrincipal extends Ventana
 				pnlCentral.repaint();
 				pnlCentral.add(	new GUIGenerator(tabla) );
 				pnlCentral.revalidate();
-			
 			} 
 		};
-	
 	}
-    
     private void rellenarPanel()
     {
 	String nomTablas[] = {"automoviles","caracteristicas","marcas","modelo","servicios_oficiales","vendedores","ventas"};
@@ -122,7 +133,10 @@ public class GUIPrincipal extends Ventana
 	    botones[i].setContentAreaFilled(false);
 	    botones[i].setSelectedIcon(null);
 	    botones[i].addActionListener(generarTabla(nomTablas[i]));
+	    botones[i].setPressedIcon(pressed[i]);
 	    pnlCentral.add(botones[i]);
+	    contenedorGral.add(pnlTitulo ,BorderLayout.NORTH);
+	    contenedorGral.add(pnlCentral, BorderLayout.CENTER);
 	}
     }
  }
