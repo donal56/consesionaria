@@ -13,7 +13,7 @@ public class Conector
     private static Statement  declaracion = null;
     private static ResultSet  resultado	  = null;
 
-    private static void crearConexion()
+    public static void crearConexion()
     {
 	try
 	{
@@ -32,28 +32,27 @@ public class Conector
 	}
     }
 
-    private static void cerrarConexion()
+    public static void cerrarConexion()
     {
-	try
-	{
-	    if (con != null)
-	    {
-		con.close();
-		declaracion= null;
-		resultado= null;
-		con= null;
-	    }
-	}
-	catch (Exception e)
-	{
-	    System.out.println("Desconexión fallida");
-	}
+		try
+		{
+		    if (con != null)
+		    {
+			con.close();
+			declaracion= null;
+			resultado= null;
+			con= null;
+		    }
+		}
+		catch (Exception e)
+		{
+		    System.out.println("Desconexión fallida");
+		}
     }
 
     public static void test()
     {
 	crearConexion();
-	cerrarConexion();
     }
 
     public static ArrayList<ArrayList<String>> getDatos(String stm) throws SQLException
@@ -76,8 +75,6 @@ public class Conector
 		}
 	}
 
-	cerrarConexion();
-	
 	return datos;
     }
     
@@ -94,7 +91,6 @@ public class Conector
 	    headers.add(resultado.getMetaData().getColumnLabel(i + 1));
 	}
 	
-	cerrarConexion();
 	
 	return headers;
     }
@@ -114,8 +110,7 @@ public class Conector
 	    datatypes.add(resultado.getString(1));
 	}
 	
-	cerrarConexion();
-	
+
 	return datatypes;
     }
     
@@ -138,7 +133,6 @@ public class Conector
 	    pk = resultado.getString(1);
 	}
 	
-	cerrarConexion();
 	
 	return pk;
     }
@@ -168,7 +162,6 @@ public class Conector
 	    fks.get(2).add(resultado.getString(3));
 	}
 	
-	cerrarConexion();
 	
 	return fks;
     }
@@ -180,7 +173,6 @@ public class Conector
 	declaracion = con.createStatement();
 	int mod= declaracion.executeUpdate(query);
 	
-	cerrarConexion();	
     
 	return (mod + " elemento(s) alterado(s)");
     }
@@ -208,8 +200,6 @@ public class Conector
         	    datos.add(resultado.getString(i + 1));
         	}
 	}
-	
-	cerrarConexion();
 	
 	return datos;
     }

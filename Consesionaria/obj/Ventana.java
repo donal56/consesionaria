@@ -1,4 +1,8 @@
 package obj;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.JFrame;
 
 public abstract class Ventana extends JFrame
@@ -33,7 +37,8 @@ public abstract class Ventana extends JFrame
 		}
 		if(pPrincipal)
 		{
-			this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+			this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			this.addWindowListener(exitListener);
 		}
 		else
 		{
@@ -43,5 +48,19 @@ public abstract class Ventana extends JFrame
 		this.setVisible(true);
 		this.setExtendedState(MAXIMIZED_BOTH);
 	}
+	
 	public abstract void crear();
+	
+
+WindowListener exitListener = new WindowAdapter() {
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+    	Conector.cerrarConexion();
+        System.exit(0);
+       
+    }
+};
+
+
 }
