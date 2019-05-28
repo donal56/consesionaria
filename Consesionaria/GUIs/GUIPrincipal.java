@@ -41,9 +41,9 @@ public class GUIPrincipal extends Ventana
 	this.setContentPane(contenedorGral);
 	contenedorGral.setBackground(Color.white);
 	
-	iconos  = new ImageIcon[7];
-	botones = new JButton  [7];
-	pressed =new ImageIcon [7];
+	iconos  = new ImageIcon[8];
+	botones = new JButton  [8];
+	pressed = new ImageIcon[8];
 	
 	pnlCentral = new JPanel();
 	pnlTitulo  = new JPanel();
@@ -68,6 +68,8 @@ public class GUIPrincipal extends Ventana
 		GUIPrincipal.class.getResource("/img/icnVendedores.png"));
 	iconos[6] = new ImageIcon(
 		GUIPrincipal.class.getResource("/img/icnVentas.png"));
+	iconos[7] = new ImageIcon(
+			GUIPrincipal.class.getResource("/img/icnModeloCaract.png"));
 	
 	pressed[0]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressAutomoviles.png"    ));
 	pressed[1]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressCaracteristicas.png"));
@@ -76,6 +78,8 @@ public class GUIPrincipal extends Ventana
 	pressed[4]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressServicios.png"      ));
 	pressed[5]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressVendedores.png"     ));
 	pressed[6]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressVentas.png"         ));
+	pressed[7]=new ImageIcon(GUIPrincipal.class.getResource("/img/pressModeloCaract.png"   ));
+	
 	
 	
 	
@@ -119,7 +123,12 @@ public class GUIPrincipal extends Ventana
 				pnlCentral.setLayout(new GridLayout(1,1));
 				pnlCentral.removeAll();
 				pnlCentral.repaint();
-				pnlCentral.add(	new GUIGenerator(tabla) );
+				if (tabla=="ModeloCaract") {
+					pnlCentral.add(	new GUIGenerator(tabla,false) );
+				}else {
+					pnlCentral.add(	new GUIGenerator(tabla) );
+				}
+				
 				pnlCentral.revalidate();
 			} 
 		};
@@ -127,8 +136,8 @@ public class GUIPrincipal extends Ventana
   
     private void rellenarPanel()
     {
-    	String nomTablas[] = {"automoviles","caracteristicas","marcas","modelo","servicios_oficiales","vendedores","ventas"};
-		for (int i = 0; i < 7; i++)
+    	String nomTablas[] = {"automoviles","caracteristicas","marcas","modelo","servicios_oficiales","vendedores","ventas","ModeloCaract"};
+		for (int i = 0; i < 8; i++)
 		{
 		    botones[i] = new JButton();
 		    botones[i].setIcon(iconos[i]);
@@ -136,8 +145,8 @@ public class GUIPrincipal extends Ventana
 		    botones[i].setOpaque(false);
 		    botones[i].setContentAreaFilled(false);
 		    botones[i].setSelectedIcon(null);
-		    botones[i].addActionListener(generarTabla(nomTablas[i]));
 		    botones[i].setPressedIcon(pressed[i]);
+		    botones[i].addActionListener(generarTabla(nomTablas[i]));
 		    pnlCentral.add(botones[i]);
 		    contenedorGral.add(pnlTitulo ,BorderLayout.NORTH);
 		    contenedorGral.add(pnlCentral, BorderLayout.CENTER);

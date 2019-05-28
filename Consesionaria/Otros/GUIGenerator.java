@@ -37,11 +37,17 @@ public class GUIGenerator extends JPanel {
 	private JScrollPane scroll;
 	private JTable table;
 	private JTextField txtFilter;
+	private boolean activateDialog;
 	
-	public GUIGenerator(String tabla) 
+	public GUIGenerator(String tabla) {
+		this(tabla,true);
+	}
+	
+	public GUIGenerator(String tabla,boolean dialog) 
 	{
 		nomTabla = tabla;
 		stm= "SELECT * FROM "+nomTabla;
+		activateDialog=dialog;
 		
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		setBackground(Color.WHITE);
@@ -68,7 +74,9 @@ public class GUIGenerator extends JPanel {
 			
 		topbar.add(txtFilter);
 		topbar.add(Box.createRigidArea(new Dimension(40, 10)));
-		topbar.add(btnAdd);
+		
+		if(activateDialog) topbar.add(btnAdd);
+	
 		topbar.add(Box.createRigidArea(new Dimension(20, 10)));
 		topbar.add(btnAtras);
 		topbar.add(Box.createHorizontalGlue());
@@ -93,7 +101,7 @@ public class GUIGenerator extends JPanel {
 				tbfiltro.setRowFilter(RowFilter.regexFilter("(?i)" + txtFilter.getText(), 0));
 			}
 		});
-
+		
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new GUIRegistro(nomTabla, null);
@@ -160,7 +168,9 @@ public class GUIGenerator extends JPanel {
 
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setResizingAllowed(false);
-		table.addMouseListener(modificarRegistro);
+		
+		if(activateDialog) table.addMouseListener(modificarRegistro);
+		
 		table.setFont(new Font("Calibri light", Font.PLAIN, 14));
 
 		scroll = new JScrollPane(table);
