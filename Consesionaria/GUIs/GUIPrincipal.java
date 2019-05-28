@@ -3,6 +3,7 @@ package GUIs;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -103,6 +104,8 @@ public class GUIPrincipal extends Ventana
 	    {		
 			pnlCentral.removeAll();
 			pnlCentral.revalidate();
+			pnlCentral.setLayout(new FlowLayout());
+			pnlCentral.setBackground(Color.WHITE);
 			rellenarPanel();		
 			pnlCentral.repaint();
 	    }
@@ -121,22 +124,24 @@ public class GUIPrincipal extends Ventana
 			} 
 		};
 	}
+  
     private void rellenarPanel()
     {
-	String nomTablas[] = {"automoviles","caracteristicas","marcas","modelo","servicios_oficiales","vendedores","ventas"};
-	for (int i = 0; i < 7; i++)
-	{
-	    botones[i] = new JButton();
-	    botones[i].setIcon(iconos[i]);
-	    botones[i].setBorder(null);
-	    botones[i].setOpaque(false);
-	    botones[i].setContentAreaFilled(false);
-	    botones[i].setSelectedIcon(null);
-	    botones[i].addActionListener(generarTabla(nomTablas[i]));
-	    botones[i].setPressedIcon(pressed[i]);
-	    pnlCentral.add(botones[i]);
-	    contenedorGral.add(pnlTitulo ,BorderLayout.NORTH);
-	    contenedorGral.add(pnlCentral, BorderLayout.CENTER);
-	}
+    	String nomTablas[] = {"automoviles","caracteristicas","marcas","modelo","servicios_oficiales","vendedores","ventas"};
+		for (int i = 0; i < 7; i++)
+		{
+		    botones[i] = new JButton();
+		    botones[i].setIcon(iconos[i]);
+		    botones[i].setBorder(null);
+		    botones[i].setOpaque(false);
+		    botones[i].setContentAreaFilled(false);
+		    botones[i].setSelectedIcon(null);
+		    botones[i].addActionListener(generarTabla(nomTablas[i]));
+		    botones[i].setPressedIcon(pressed[i]);
+		    pnlCentral.add(botones[i]);
+		    contenedorGral.add(pnlTitulo ,BorderLayout.NORTH);
+		    contenedorGral.add(pnlCentral, BorderLayout.CENTER);
+		}
+		pnlCentral.add(lblGif);
     }
  }
